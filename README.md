@@ -11,11 +11,10 @@ Automated bot that fetches the latest top news about **Ethiopia**, crafts a beau
 
 | Feature | Description |
 |---------|-------------|
-| 📰 **Smart News Fetching** | Top Ethiopia headlines via [GNews API](https://gnews.io/) |
-| 🎨 **Beautiful Formatting** | Emoji-rich, HTML-styled Telegram messages |
-| 📤 **Reliable Delivery** | Auto-retry with rate-limit handling |
-| 🕐 **Daily Scheduling** | Built-in scheduler or external cron support |
-| 🚀 **1-Click Deploy** | Railway-ready with `Procfile` + `railway.json` |
+| 📰 **RSS Aggregation** | Multi-source feed parsing (Addis Standard, Reporter, ENA, etc.) |
+| ✨ **AI Summaries** | Single-call Gemini batch rephrasing for copyright safety |
+| 🎨 **Beautiful Formatting** | Emoji-rich, split-aware HTML delivery |
+| 🚀 **Render Ready** | Blueprint for Render Cron Job included |
 
 ---
 
@@ -23,15 +22,15 @@ Automated bot that fetches the latest top news about **Ethiopia**, crafts a beau
 
 ```
 ai_news/
-├── config.py              # Centralized configuration
-├── news_fetcher.py        # GNews API integration
-├── message_formatter.py   # Beautiful HTML message builder
-├── telegram_sender.py     # Telegram channel delivery
-├── main.py                # Orchestrator + scheduler
+├── config.py              # Feeds and AI settings
+├── news_fetcher.py        # RSS engine + fuzzy deduplication
+├── summarizer.py          # Gemini/Sumy AI logic
+├── message_formatter.py   # Split-aware HTML builder
+├── telegram_sender.py     # Tag-balancing delivery
+├── main.py                # Main entry point
 ├── requirements.txt       # Python dependencies
 ├── .env.example           # Environment variable template
-├── Procfile               # Railway deployment
-├── railway.json           # Railway cron config
+├── render.yaml            # Render Blueprint config
 └── README.md              # You are here!
 ```
 
@@ -51,8 +50,8 @@ pip install -r requirements.txt
 
 | Key | Where to get it |
 |-----|-----------------|
-| **GNews API Key** | [gnews.io](https://gnews.io/) → Sign up (free: 100 req/day) |
 | **Telegram Bot Token** | Message [@BotFather](https://t.me/BotFather) → `/newbot` |
+| **Gemini API Key** | [Google AI Studio](https://aistudio.google.com/) (Optional but recommended) |
 | **Channel ID** | Add bot as channel admin, then use [@get_id_bot](https://t.me/get_id_bot) |
 
 ### 3. Configure Environment
@@ -82,30 +81,21 @@ python main.py --schedule
 
 ---
 
-## 🚀 Deployment (Railway — Recommended)
+## 🚀 Deployment (Render)
 
-[Railway](https://railway.app/) provides free-tier hosting with built-in cron jobs.
+[Render](https://render.com/) is perfect for running this as a daily **Cron Job**.
 
 ### Steps
 
-1. Push your code to GitHub
-2. Go to [railway.app](https://railway.app/) → **New Project** → **Deploy from GitHub**
-3. Add environment variables in the Railway dashboard:
-   - `GNEWS_API_KEY`
+1. Push your code to GitHub.
+2. Go to **Render Dashboard** → **Blueprints** → **New Blueprint**.
+3. Connect your repository.
+4. Render will detect `render.yaml` and set up the **Cron Job**.
+5. Add your **Environment Variables** in the Render dashboard:
    - `TELEGRAM_BOT_TOKEN`
    - `TELEGRAM_CHANNEL_ID`
-4. Railway will auto-detect the `Procfile` and `railway.json`
-5. The bot will run daily at **8:00 AM UTC** automatically via the cron schedule
-
-### Alternative: Linux Cron Job
-
-```bash
-# Open crontab
-crontab -e
-
-# Add this line to run daily at 8:00 AM UTC:
-0 8 * * * cd /path/to/ai_news && /path/to/python main.py >> /var/log/ai_news.log 2>&1
-```
+   - `GEMINI_API_KEY` (highly recommended)
+6. The bot will run daily at **8:00 AM UTC**.
 
 ---
 

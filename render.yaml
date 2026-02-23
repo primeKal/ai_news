@@ -1,0 +1,16 @@
+services:
+  - type: cron
+    name: papi-news-bot
+    env: python
+    schedule: "0 8 * * *" # Daily at 8:00 AM UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHANNEL_ID
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SUMMARIZATION_MODE
+        value: generative
