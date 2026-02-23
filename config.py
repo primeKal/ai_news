@@ -26,6 +26,12 @@ RSS_MAX_ARTICLES = 6    # Max articles to include in each message
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHANNEL_ID = os.getenv("TELEGRAM_CHANNEL_ID", "")
 
+# ── AI Content ───────────────────────────────────────────────────────────────
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+# Modes: "generative" (uses Gemini) or "extractive" (uses Sumy)
+SUMMARIZATION_MODE = os.getenv("SUMMARIZATION_MODE", "generative")
+MAX_SUMMARY_SENTENCES = 2
+
 # ── Scheduler ────────────────────────────────────────────────────────────────
 SCHEDULE_HOUR = int(os.getenv("SCHEDULE_HOUR", "8"))
 SCHEDULE_MINUTE = int(os.getenv("SCHEDULE_MINUTE", "0"))

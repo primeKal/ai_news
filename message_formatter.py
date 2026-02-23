@@ -57,11 +57,9 @@ def format_news_message(articles: list[dict]) -> str:
         # Title with link
         lines.append(f'{num_emoji}  <a href="{url}">{title}</a>')
 
-        # Description (capped at 2000 chars, double-newlines collapsed)
+        # AI Generated Summary
         if description:
-            description = description.replace("\n\n", "\n")  # prevent split mid-tag
-            if len(description) > 2000:
-                description = description[:2000] + "…"
+            lines.append(f"✨ <b>Quick Take (AI):</b>")
             lines.append(f"<i>{description}</i>")
         # Source & timestamp
         lines.append(f"🗞 {source}  ·  🕐 {published}")

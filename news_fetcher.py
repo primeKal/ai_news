@@ -16,6 +16,7 @@ from email.utils import parsedate_to_datetime
 import feedparser
 
 import config
+import summarizer
 
 logger = logging.getLogger(__name__)
 
@@ -62,11 +63,11 @@ def fetch_ethiopia_news(max_articles: int | None = None) -> list[dict]:
 
                 # Get the longest available description text
                 raw_desc = _get_longest_text(entry)
-                description = _strip_html(raw_desc)
+                full_description = _strip_html(raw_desc)
 
                 all_articles.append({
                     "title":        entry.get("title", "Untitled"),
-                    "description":  description,
+                    "description":  full_description,
                     "url":          entry.get("link", ""),
                     "source":       source,
                     "published_at": published_nice,
@@ -79,13 +80,18 @@ def fetch_ethiopia_news(max_articles: int | None = None) -> list[dict]:
         logger.warning("⚠️  No articles found across all feeds.")
         return []
 
-    # Fuzzy deduplicate — catches near-duplicate headlines across sources
+    # 1. Fuzzy deduplicate — catches near-duplicate headlines across sources
     unique = _deduplicate(all_articles)
 
-    # Trim to max count
+    # 2. Trim to max count FIRST (to save Gemini quota)
     result = unique[:count]
-    logger.info("✅ Fetched %d articles successfully.", len(result))
-    return result
+
+    # 3. Batch summarize the final selection (ONE API call)
+    logger.info("🤖 Summarizing %d articles...", len(result))
+    summarized_result = summarizer.summarize_batch(result)
+
+    logger.info("✅ Fetched and summarized %d articles successfully.", len(summarized_result))
+    return summarized_result
 
 
 def _extract_source(entry) -> str:
