@@ -34,7 +34,7 @@ def format_news_message(articles: list[dict]) -> str:
     lines.append(f"<i>{today}</i>")
     lines.append("")
     lines.append("Your daily updates from the Horn 🌍")
-    lines.append("Here are today's top curated news for you.")
+    lines.append("Here are today's top curated news for you by Papi AI.")
     lines.append("")
     lines.append("━━━━━━━━━━━━━━━━━━━━━━━━━━")
 

@@ -1,0 +1,38 @@
+name: Daily Ethiopia News Bot
+
+on:
+  schedule:
+    # 6:00 AM East Africa Time (EAT) is 3:00 AM UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch: # Allows you to manually trigger the workflow from the Actions tab
+
+jobs:
+  run-news-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip' # Caches pip dependencies for faster runs
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run news bot (Single Execution)
+        env:
+          # Define environment variables securely using GitHub Secrets
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Optional: Only needed if you don't want the default "generative"
+          SUMMARIZATION_MODE: ${{ secrets.SUMMARIZATION_MODE }}
+        # Since we're using GitHub Actions for the schedule, 
+        # we run `main.py` directly without the `--schedule` flag
+        run: python main.py
