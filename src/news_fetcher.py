@@ -15,8 +15,8 @@ from email.utils import parsedate_to_datetime
 
 import feedparser
 
-import config
-import summarizer
+from src import config
+from src import summarizer
 
 logger = logging.getLogger(__name__)
 

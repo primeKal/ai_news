@@ -8,7 +8,7 @@ with a fallback to Sumy (extractive summarization).
 
 import logging
 import json
-import config
+from src import config
 
 # Generative AI (Gemini)
 try:

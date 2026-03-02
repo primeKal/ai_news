@@ -11,7 +11,7 @@ from telegram import Bot
 from telegram.error import TelegramError, RetryAfter, TimedOut
 from telegram.constants import ParseMode
 
-import config
+from src import config
 
 logger = logging.getLogger(__name__)
 

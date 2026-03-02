@@ -14,10 +14,10 @@ import logging
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-import config
-from news_fetcher import fetch_ethiopia_news
-from message_formatter import format_news_message
-from telegram_sender import send_message
+from src import config
+from src.news_fetcher import fetch_ethiopia_news
+from src.message_formatter import format_news_message
+from src.telegram_sender import send_message
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
