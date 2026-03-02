@@ -9,10 +9,7 @@ Usage
   python main.py --schedule    Run on a recurring daily schedule (local mode)
 """
 
-import argparse
 import logging
-
-from apscheduler.schedulers.blocking import BlockingScheduler
 
 from src import config
 from src.news_fetcher import fetch_ethiopia_news
@@ -53,42 +50,11 @@ def run_daily_job():
 
 # ── Entry point ──────────────────────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="Ethiopia Daily News Telegram Bot")
-    parser.add_argument(
-        "--schedule",
-        action="store_true",
-        help="Run on a recurring daily schedule instead of a single execution.",
-    )
-    args = parser.parse_args()
-
     # Validate env vars
     config.validate_config()
 
-    if args.schedule:
-        logger.info(
-            "🕑 Scheduling daily job at %02d:%02d UTC …",
-            config.SCHEDULE_HOUR,
-            config.SCHEDULE_MINUTE,
-        )
-
-        scheduler = BlockingScheduler()
-        scheduler.add_job(
-            run_daily_job,
-            trigger="cron",
-            hour=config.SCHEDULE_HOUR,
-            minute=config.SCHEDULE_MINUTE,
-        )
-
-        # Also run immediately on startup
-        run_daily_job()
-
-        try:
-            scheduler.start()
-        except (KeyboardInterrupt, SystemExit):
-            logger.info("👋 Scheduler stopped. Goodbye!")
-    else:
-        # Single run mode — ideal for cron jobs & Railway scheduled tasks
-        run_daily_job()
+    # Single run mode — ideal for GitHub Actions or cron jobs
+    run_daily_job()
 
 
 if __name__ == "__main__":

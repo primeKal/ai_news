@@ -32,9 +32,6 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 SUMMARIZATION_MODE = os.getenv("SUMMARIZATION_MODE", "generative")
 MAX_SUMMARY_SENTENCES = 2
 
-# ── Scheduler ────────────────────────────────────────────────────────────────
-SCHEDULE_HOUR = int(os.getenv("SCHEDULE_HOUR", "8"))
-SCHEDULE_MINUTE = int(os.getenv("SCHEDULE_MINUTE", "0"))
 
 
 def validate_config():
